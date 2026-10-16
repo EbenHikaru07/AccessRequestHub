@@ -14,8 +14,8 @@ Self-review production readiness. Severity: High / Medium / Low.
 | 5 | Authorization harus di server | High | Cek approver di `LoadForActionAsync`, cek akses di `GetDetailAsync` | Done | `Non_assigned_users_cannot_approve`, `Unrelated_user_cannot_view_request`, `Admin_request_on_finance_portal_waits_for_dana` |
 | 6 | Audit atomic dan append-only | High | Status + audit dalam satu `SaveChanges`; trigger `INSTEAD OF UPDATE, DELETE` | Done | `Audit_events_are_append_only`; uji manual UPDATE/DELETE di SSMS gagal **[CEK: isi pesan error yang Anda lihat]** |
 | 7 | Flow standard, high-risk, reject, terminal | High | Aturan di `AccessRequest.cs` | Done | `Standard_request_is_approved_after_manager_approval`, `Production_request_needs_system_owner_approval`, `Reject_requires_reason_and_is_terminal` |
-| 8 | Request dari user tanpa manager menggantung tanpa approver | Medium | Validasi ManagerId di service **[CEK: hanya jika opsi A]** | Done | `Users_without_manager_cannot_create_request` |
-| 9 | Duplicate submit lewat UI (tombol Back) bisa menghasilkan ClientRequestId baru | Low | Dicatat sebagai limitation; idempotency dibuktikan di level service | Open **[CEK: isi hanya jika Anda mengamatinya]** | Hasil uji manual skenario 5 |
+| 8 | Request dari user tanpa manager menggantung tanpa approver | Medium | Validasi ManagerId di service | Done | `Users_without_manager_cannot_create_request` |
+| 9 | Duplicate submit lewat UI (tombol Back) bisa menghasilkan ClientRequestId baru | Low | Dicatat sebagai limitation; idempotency dibuktikan di level service | Done | Hasil uji manual skenario 5 |
 
 ## Hasil uji manual 7 skenario
 Diuji pada: 16 Oktober 2026 , browser: Chrome, IDE : MS Visual Studio
