@@ -1,11 +1,24 @@
 using AccessRequestHub.Web.Data;
+using AccessRequestHub.Web.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(o =>
+    {
+        o.LoginPath = "/Account/Index";
+        o.AccessDeniedPath = "/Account/Index";
+    });
+
+// Semua halaman wajib login, kecuali yang diberi [AllowAnonymous]
+builder.Services.AddControllersWithViews(o => o.Filters.Add(new AuthorizeFilter()));
+
+//builder.Services.AddScoped<AccessRequestService>();   // baris ini baru berfungsi setelah 2B
 
 var app = builder.Build();
 
