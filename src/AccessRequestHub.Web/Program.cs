@@ -18,7 +18,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // Semua halaman wajib login, kecuali yang diberi [AllowAnonymous]
 builder.Services.AddControllersWithViews(o => o.Filters.Add(new AuthorizeFilter()));
 
-//builder.Services.AddScoped<AccessRequestService>();   // baris ini baru berfungsi setelah 2B
+builder.Services.AddScoped<AccessRequestService>();
 
 var app = builder.Build();
 
