@@ -94,6 +94,18 @@ namespace AccessRequestHub.Tests
         }
 
         [Fact]
+        public async Task Users_without_manager_cannot_create_request()
+        {
+            foreach (var actor in new[] { SeedIds.Bob, SeedIds.Carol, SeedIds.Dana, SeedIds.Erin })
+            {
+                await Assert.ThrowsAsync<ForbiddenException>(() =>
+                    _fx.NewService().CreateAsync(actor,
+                        new CreateAccessRequestInput(Guid.NewGuid(), SeedIds.Crm,
+                            AccessEnvironment.NonProduction, AccessLevel.Read, "test")));
+            }
+        }
+
+        [Fact]
         public async Task Unrelated_user_cannot_view_request()
         {
             var id = await CreateAsync(SeedIds.Crm, AccessEnvironment.NonProduction, AccessLevel.Read);

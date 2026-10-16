@@ -1,0 +1,46 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using AccessRequestHub.Web.Domain
+@model AccessRequestHub.Web.Models.CreateRequestViewModel
+@{
+    ViewData["Title"] = "Buat request";
+}
+
+<h2>Buat Access Request</h2>
+
+<form asp-action="Create" method="post" style="max-width:520px">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    <input type="hidden" asp-for="ClientRequestId" />
+
+    <div class="mb-3">
+        <label asp-for="ApplicationId" class="form-label">Aplikasi</label>
+        <select asp-for="ApplicationId" asp-items="(SelectList)ViewBag.Applications" class="form-select">
+            <option value="">-- pilih --</option>
+        </select>
+        <span asp-validation-for="ApplicationId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Environment" class="form-label">Environment</label>
+        <select asp-for="Environment" asp-items="Html.GetEnumSelectList<AccessRequestHub.Web.Domain.Enums.AccessEnvironment>()" class="form-select"></select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AccessLevel" class="form-label">Access level</label>
+        <select asp-for="AccessLevel" asp-items="Html.GetEnumSelectList<AccessRequestHub.Web.Domain.Enums.AccessLevel>()" class="form-select"></select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Justification" class="form-label">Justification</label>
+        <textarea asp-for="Justification" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Justification" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary" onclick="this.form.submit(); this.disabled = true; return false;">Kirim</button>
+    <a asp-action="Index" class="btn btn-link">Batal</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

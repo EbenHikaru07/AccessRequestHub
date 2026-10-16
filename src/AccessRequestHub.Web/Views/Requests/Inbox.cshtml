@@ -1,0 +1,33 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<AccessRequestHub.Web.Domain.AccessRequest>
+@{
+    ViewData["Title"] = "Approval Inbox";
+}
+
+<h2>Approval Inbox</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Tidak ada request yang menunggu tindakan Anda.</div>
+}
+else
+{
+    <table class="table table-hover">
+        <thead><tr><th>Requester</th><th>Aplikasi</th><th>Environment</th><th>Level</th><th>Tahap</th><th></th></tr></thead>
+        <tbody>
+            @foreach (var r in Model)
+            {
+                <tr>
+                    <td>@r.Requester.DisplayName</td>
+                    <td>@r.Application.Name</td>
+                    <td>@r.Environment</td>
+                    <td>@r.AccessLevel</td>
+                    <td>@r.Status</td>
+                    <td><a asp-action="Details" asp-route-id="@r.Id">Tinjau</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

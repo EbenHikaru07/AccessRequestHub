@@ -1,0 +1,85 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model AccessRequestHub.Web.Models.RequestDetailViewModel
+@{
+    var r = Model.Request;
+    ViewData["Title"] = "Detail request";
+}
+
+<h2>Detail Request</h2>
+
+@if (TempData["Success"] is string ok)
+{
+    <div class="alert alert-success">@ok</div>
+}
+@if (TempData["Error"] is string err)
+{
+    <div class="alert alert-danger">@err</div>
+}
+@if (TempData["Conflict"] is string conflict)
+{
+    <div class="alert alert-warning">
+        <strong>Conflict:</strong> @conflict
+        <a asp-action="Details" asp-route-id="@r.Id">Muat ulang</a>
+    </div>
+}
+
+<dl class="row">
+    <dt class="col-sm-3">Requester</dt>
+    <dd class="col-sm-9">@r.Requester.DisplayName</dd>
+    <dt class="col-sm-3">Aplikasi</dt>
+    <dd class="col-sm-9">@r.Application.Name</dd>
+    <dt class="col-sm-3">Environment</dt>
+    <dd class="col-sm-9">@r.Environment</dd>
+    <dt class="col-sm-3">Access level</dt>
+    <dd class="col-sm-9">@r.AccessLevel</dd>
+    <dt class="col-sm-3">Justification</dt>
+    <dd class="col-sm-9">@r.Justification</dd>
+    <dt class="col-sm-3">Status</dt>
+    <dd class="col-sm-9"><strong>@r.Status</strong></dd>
+    <dt class="col-sm-3">Policy version</dt>
+    <dd class="col-sm-9">@r.PolicyVersion.Name</dd>
+    @if (r.RejectReason is not null)
+    {
+        <dt class="col-sm-3">Alasan reject</dt>
+        <dd class="col-sm-9">@r.RejectReason</dd>
+    }
+</dl>
+
+@if (Model.CanAct)
+{
+    var version = Convert.ToBase64String(r.RowVersion);
+    <div class="card card-body mb-4">
+        <form asp-action="Approve" asp-route-id="@r.Id" method="post" class="mb-3">
+            <input type="hidden" name="rowVersion" value="@version" />
+            <button class="btn btn-success">Approve</button>
+        </form>
+        <form asp-action="Reject" asp-route-id="@r.Id" method="post">
+            <input type="hidden" name="rowVersion" value="@version" />
+            <div class="mb-2">
+                <label class="form-label">Alasan reject (wajib)</label>
+                <input name="reason" class="form-control" required />
+            </div>
+            <button class="btn btn-danger">Reject</button>
+        </form>
+    </div>
+}
+
+<h4>Audit Timeline</h4>
+<ul class="list-group mb-4">
+    @foreach (var a in r.AuditEvents)
+    {
+        <li class="list-group-item">
+            <strong>@a.EventType</strong> oleh @a.Actor.DisplayName
+            <span class="text-muted">(@a.FromStatus → @a.ToStatus)</span>
+            <br /><small>@a.OccurredAtUtc.ToString("yyyy-MM-dd HH:mm:ss") UTC</small>
+            @if (a.Reason is not null)
+            {
+                <div>Alasan: @a.Reason</div>
+            }
+        </li>
+    }
+</ul>
+
+<a asp-action="Index">Kembali ke My Requests</a>

@@ -1,0 +1,39 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model List<AccessRequestHub.Web.Domain.AccessRequest>
+@{
+    ViewData["Title"] = "My Requests";
+}
+
+<h2>My Requests</h2>
+<a asp-action="Create" class="btn btn-primary mb-3">Buat request baru</a>
+
+@if (TempData["Success"] is string ok)
+{
+    <div class="alert alert-success">@ok</div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Belum ada request. Klik "Buat request baru" untuk memulai.</div>
+}
+else
+{
+    <table class="table table-hover">
+        <thead><tr><th>Aplikasi</th><th>Environment</th><th>Level</th><th>Status</th><th>Dibuat (UTC)</th><th></th></tr></thead>
+        <tbody>
+            @foreach (var r in Model)
+            {
+                <tr>
+                    <td>@r.Application.Name</td>
+                    <td>@r.Environment</td>
+                    <td>@r.AccessLevel</td>
+                    <td>@r.Status</td>
+                    <td>@r.CreatedAtUtc.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td><a asp-action="Details" asp-route-id="@r.Id">Detail</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

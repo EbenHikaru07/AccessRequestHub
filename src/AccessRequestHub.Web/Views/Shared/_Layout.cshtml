@@ -23,11 +23,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                         @if (User.Identity?.IsAuthenticated == true)
                         {
+                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Requests" asp-action="Index">My Requests</a></li>
+                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Requests" asp-action="Inbox">Approval Inbox</a></li>
+                            <li class="nav-item"><a class="nav-link text-dark" asp-controller="Requests" asp-action="Create">Buat Request</a></li>
                             <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline ms-auto">
                                 <span class="me-2">@User.Identity.Name</span>
                                 <button class="btn btn-sm btn-outline-secondary">Ganti user</button>

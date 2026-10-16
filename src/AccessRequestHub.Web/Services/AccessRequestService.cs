@@ -35,6 +35,12 @@ namespace AccessRequestHub.Web.Services
             if (!await _db.Applications.AnyAsync(a => a.Id == input.ApplicationId, ct))
                 throw new NotFoundException("Application not found.");
 
+            var requester = await _db.Users.AsNoTracking()
+    .FirstOrDefaultAsync(u => u.Id == actorId, ct)
+    ?? throw new NotFoundException("User not found.");
+            if (requester.ManagerId is null)
+                throw new ForbiddenException("Anda tidak memiliki manager, sehingga tidak dapat membuat request.");
+
             var existing = await FindByClientId(actorId, input.ClientRequestId, ct);
             if (existing is not null) return (existing, false);
 
