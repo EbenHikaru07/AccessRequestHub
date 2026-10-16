@@ -18,10 +18,19 @@ Self-review production readiness. Severity: High / Medium / Low.
 | 9 | Duplicate submit lewat UI (tombol Back) bisa menghasilkan ClientRequestId baru | Low | Dicatat sebagai limitation; idempotency dibuktikan di level service | Open **[CEK: isi hanya jika Anda mengamatinya]** | Hasil uji manual skenario 5 |
 
 ## Hasil uji manual 7 skenario
-**[CEK: isi hasil nyata, tanggal, dan catatan tiap skenario. Tulis juga yang gagal.]**
-1. Standard: ...
-2. Production: ...
-(dst. sampai 7)
+Diuji pada: 16 Oktober 2026 , browser: Chrome, IDE : MS Visual Studio
+
+| # | Skenario | Hasil (Lulus/Gagal) | Catatan |
+|---|---|---|---|
+| 1 | Standard | Lulus | |
+| 2 | Production | Lulus | |
+| 3 | Admin | Lulus | |
+| 4 | Unauthorized | Lulus | |
+| 5 | Duplicate submit | Lulus | |
+| 6 | Concurrent | Lulus |  |
+| 7 | Rejected | Lulus | |
+
+Uji trigger audit (SSMS): UPDATE → [pesan error], DELETE → [pesan error]
 
 ## Known limitations
 - Login hanya simulasi (cookie dari user switcher), bukan autentikasi production.
